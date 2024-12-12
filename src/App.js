@@ -27,7 +27,7 @@ function App() {
   const fetchRepos = async (username) => {
     setLoading(true);
     const tags = {
-      isTeamPlayer: { tag: "👥Team Player", desc: "Worked with 2 or more person." },
+      isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people." },
       isCommunityDriven: { tag: "🌐Community driven", desc: "Worked with 50 or more person." },
       isWeekendProject: { tag: "🏠Weekend Project", desc: "More comments on the weekend." },
       isBigProject: { tag: "🗃️Big Project", desc: "Total commits exceed 100." },
