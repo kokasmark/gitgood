@@ -10,12 +10,14 @@ function App() {
   const [user, setUser] = useState();
   const [traits, setTraits] = useState({"tag":[],"lang":[]});
   const [loading, setLoading] = useState(false);
+  const [colors, setColors] = useState({})
 
   const RepoArgs = {
     repos,
     tagHovered,
     setTagHovered,
-    loading
+    loading,
+    colors
   }
 
   useEffect(() => {
@@ -43,8 +45,10 @@ function App() {
     };
 
     Object.keys(tags).forEach(key => {
-      tags[key]["color"] = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+      const newColor = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
+      setColors(prevColors => ({ ...prevColors, [tags[key].tag]: newColor }));
     });
+    let uniqueLanguages = [];
     try {
       const token = process.env.REACT_APP_API_KEY;
       const userRes = await fetch(`https://api.github.com/users/${username}`, {
@@ -143,7 +147,7 @@ function App() {
           }
           
           // Determine tags
-          const isTeamPlayer = totalContributors > 2;
+          const isTeamPlayer = totalContributors > 1;
           const isCommunityDriven = totalContributors > 50;
           const isLoneWolf = totalContributors == 0;
           const isBigProject = totalCommits > 100;
@@ -234,6 +238,12 @@ function App() {
             return repoData.size > sizeThreshold;
           })();
 
+          Object.keys(languages).forEach(lang => {
+            if (! Object.keys(colors).includes(lang)) {
+              const newColor = `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`;
+              setColors(prevColors => ({ ...prevColors, [lang]: newColor }));
+            }
+          });
           return {
             name: repo.name,
             tags: [
@@ -339,15 +349,19 @@ function App() {
               </div>
             </div>
 
-            <div className='traits'>
+            <div className='traits' style={{display: loading ? "none" : "flex"}}>
               <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
                 {traits["tag"].map((trait_tag,index)=>(
-                  <span>{trait_tag}</span>
+                  <span className='tag' style={{backgroundColor: colors[trait_tag]}}
+                  onMouseEnter={(e) => setTagHovered(trait_tag)}
+                  onMouseLeave={(e) => setTagHovered("")}>{trait_tag}</span>
                 ))}
               </div>
               <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
                 {traits["lang"].map((trait_lang,index)=>(
-                  <span>{trait_lang}</span>
+                  <span className='tag' style={{backgroundColor: colors[trait_lang]}}
+                  onMouseEnter={(e) => setTagHovered(trait_lang)}
+                  onMouseLeave={(e) => setTagHovered("")}>{trait_lang}</span>
                 ))}
               </div>
             </div>

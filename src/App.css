@@ -95,6 +95,22 @@ input:focus{
 
   justify-content: center;
   align-items: center;
+
+  background-color: var(--primary);
+  padding: 10px 100px 10px 100px;
+  border-radius: 20px;
+
+  position: relative;
+  left: 10px;
+}
+.user-info .traits::before{
+  content: "";
+  width: 50px;
+  height: 50px;
+  background-color: var(--primary);
+  position: absolute;
+  left: -25px;
+  rotate: 45deg;
 }
 
 .user-info .traits div{
@@ -135,8 +151,6 @@ input:focus{
 
   transition: 0.3s;
   position: relative;
-
-  text-decoration: none;
 }
 .repo:hover{
   z-index: 100;
@@ -146,6 +160,14 @@ input:focus{
 }
 .repo.load{
   animation: load-out 0.5s linear forwards;
+}
+.repo a{
+  color: var(--background);
+  text-decoration: none;
+
+  font-weight: bolder;
+  font-size: x-large;
+  margin-bottom: 10px;
 }
 .tags{
   display: flex;
@@ -166,6 +188,7 @@ input:focus{
   position: relative;
   
   z-index: 5;
+  box-shadow: 0px 0px 10px #696969;
 }
 .tag:hover{
   z-index: 10;
@@ -198,10 +221,6 @@ input:focus{
   justify-content: center;
   position: relative;
   z-index: -1;
-}
-.language{
-  border: 2px solid;
-  color: var(--background);
 }
 
 @media only screen and (max-width: 600px) {
