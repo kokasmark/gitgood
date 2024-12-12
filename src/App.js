@@ -47,8 +47,6 @@ function App() {
     });
     try {
       const token = process.env.REACT_APP_API_KEY;
-
-      alert(process.env.REACT_APP_API_KEY)
       const userRes = await fetch(`https://api.github.com/users/${username}`, {
         headers: {
           Authorization: `token ${token}`,

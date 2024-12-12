@@ -1,6 +1,6 @@
 {
   "name": "gitgood",
-  "homepage": "https://kokasmark.github.io/gitgood/",
+  "homepage": "https://gitgood-kokasmarks-projects.vercel.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
