@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Packery from 'packery';
 
-const Repositorys = ({ repos, tagHovered,setTagHovered }) => {
+const Repositorys = ({ repos, tagHovered,setTagHovered,loading }) => {
   const packeryRef = useRef(null);
 
   useEffect(() => {
@@ -32,17 +32,21 @@ const Repositorys = ({ repos, tagHovered,setTagHovered }) => {
   return (
     <div ref={packeryRef} className="repos">
        {repos.map((repo, index) => (
-          <div key={index} className={`repo 
-            ${((!repo.tags.includes(tagHovered) && !Object.keys(repo.languages).includes(tagHovered)) && tagHovered != "") && "filtered-out"}`} 
-          style={{animationDelay: `${(index/repos.length)*0.5}s`,minHeight: `${150+repo.height}px`}}>
+          <a href={repo.link} key={index} className={`repo 
+            ${((!repo.tags.some(tag => tag.tag === tagHovered) && !Object.keys(repo.languages).includes(tagHovered)) && tagHovered != "") && "filtered-out"}
+            ${loading && 'load'}`} 
+          style={{animationDelay: `${(index/repos.length)*0.5}s`,minHeight: `${100+repo.height}px`}}
+          target='blank'>
             <h2>{repo.name}</h2>
             <div className='tags'>
               {repo.tags.map((tag, tagIndex) => (
-                <span key={tagIndex} className={`tag ${(tagHovered == tag)&&'filter'}`} 
-                style={{backgroundColor: `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`}}
-                onMouseEnter={(e) => setTagHovered(tag)}
+                <span key={tagIndex} className={`tag ${(tagHovered == tag.tag)&&'filter'}`} 
+                style={{backgroundColor: tag.color}}
+                onMouseEnter={(e) => setTagHovered(tag.tag)}
                 onMouseLeave={(e) => setTagHovered("")}>
-                  {tag}</span>
+                  {tag.tag}
+                  <div className='desc'>{tag.desc}</div>
+                </span>
               ))}
             </div>
             <div className='languages'>
@@ -54,7 +58,7 @@ const Repositorys = ({ repos, tagHovered,setTagHovered }) => {
                 {lang}</span>
               ))}
             </div>
-          </div>
+          </a>
         ))}
     </div>
   );

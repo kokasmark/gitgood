@@ -61,16 +61,47 @@ input:focus{
   align-items: center;
   justify-content: center;
 }
-.user-info img{
+.user-info .profile-img {
   width: 150px;
   height: 150px;
+  position: relative; /* Make the parent relative */
+}
 
+.profile-img img {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
 }
+
+.loader {
+  position: absolute; /* Position relative to parent */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: var(--primary) #0000;
+  animation: l1 1s infinite;
+}
+
 .user-info .traits{
   display: flex;
   flex-direction: row;
   gap: 30px;
+  margin-left: 30px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.user-info .traits div{
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 }
 
 .repos {
@@ -100,16 +131,24 @@ input:focus{
   animation: repo-load 0.3s linear forwards;
 
   transition: 0.3s;
+  position: relative;
+
+  text-decoration: none;
+}
+.repo:hover{
+  z-index: 100;
 }
 .repo.filtered-out{
   filter: brightness(0.5);
+}
+.repo.load{
+  animation: load-out 0.5s linear forwards;
 }
 .tags{
   display: flex;
   flex-direction: row;
 
   flex-wrap: wrap;
-  width: 80%;
   justify-content: center;
 }
 .tag{
@@ -120,7 +159,31 @@ input:focus{
   cursor: pointer;
 
   transition: 1s;
+
+  position: relative;
+  
+  z-index: 5;
 }
+.tag:hover{
+  z-index: 10;
+}
+.tag:hover .desc{
+  opacity: 1;
+}
+.tag .desc{
+  opacity: 0;
+  position: absolute;
+  background-color: inherit;
+  top: 30px;
+  left: 0px;
+  padding: 2px;
+  border-radius: 5px;
+
+  transition: opacity 0.5s;
+
+  pointer-events: none;
+}
+
 .tag.filter{
   animation: tag-filtered 1s linear infinite;
 }
@@ -129,11 +192,17 @@ input:focus{
   flex-direction: row;
 
   flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: -1;
 }
 .language{
   border: 2px solid;
   color: var(--background);
 }
+
+
+@keyframes l1 {to{transform: translate(-50%, -50%) rotate(.5turn)}}
 @keyframes repo-load {
   0%{
     scale: 0;
@@ -150,6 +219,22 @@ input:focus{
   100%{
     scale: 1;
   }
+}
+@keyframes load-out {
+  0% {
+    scale: 1;
+ }
+ 25% {
+  scale: .95;
+ }
+ 50% {
+    opacity: 1;
+    scale: 1.1;
+ }
+ 100% {
+    opacity: 0;
+    scale: .3;
+ }
 }
 @keyframes tag-filtered {
   0%
