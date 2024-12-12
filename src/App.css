@@ -1,0 +1,169 @@
+:root{
+  --background: #0d1117;
+  --primary: #ffffff;
+}
+body{
+  background-color: var(--background);
+  font-family: monospace;
+}
+.App {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: var(--background);
+  
+  color: var(--primary);
+
+  height: 100vh;
+  width: 100vw;
+
+  overflow-x: hidden;
+}
+
+header{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+input{
+  background-color: transparent;
+  color: var(--primary);
+  border: none;
+  height: 30px;
+
+  border-bottom: 2px solid white;
+}
+input:focus{
+  outline: none;
+}
+
+.user-info{
+  flex-basis: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.user-info img{
+  width: 150px;
+  height: 150px;
+
+  border-radius: 50%;
+}
+.user-info .traits{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.repos {
+  display: flex;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 30px;
+}
+.repo{
+  width: 20%;
+  height: fit-content;
+  padding: 10px;
+
+  min-width: 300px;
+  min-height: 150px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  background-color: white;
+  color: #1d1d1d;
+  scale: 0;
+  animation: repo-load 0.3s linear forwards;
+
+  transition: 0.3s;
+}
+.repo.filtered-out{
+  filter: brightness(0.5);
+}
+.tags{
+  display: flex;
+  flex-direction: row;
+
+  flex-wrap: wrap;
+  width: 80%;
+  justify-content: center;
+}
+.tag{
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  margin: 2px;
+  cursor: pointer;
+
+  transition: 1s;
+}
+.tag.filter{
+  animation: tag-filtered 1s linear infinite;
+}
+.languages{
+  display: flex;
+  flex-direction: row;
+
+  flex-wrap: wrap;
+}
+.language{
+  border: 2px solid;
+  color: var(--background);
+}
+@keyframes repo-load {
+  0%{
+    scale: 0;
+  }
+  40%{
+    scale: 1.1;
+  }
+  60%{
+    scale: 1;
+  }
+  80%{
+    scale: 1.1;
+  }
+  100%{
+    scale: 1;
+  }
+}
+@keyframes tag-filtered {
+  0%
+  {
+    transform: scale( 1 );
+  }
+  20%
+  {
+    transform: scale( 1.1 );
+  }
+  40%
+  {
+    transform: scale( 1 );
+  }
+  60%
+  {
+    transform: scale( 1.1 );
+  }
+  80%
+  {
+    transform: scale( 1 );
+  }
+  100%
+  {
+    transform: scale( 1 );
+  }
+}
