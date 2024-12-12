@@ -25,7 +25,8 @@ function App() {
   const fetchRepos = async (username) => {
     setLoading(true);
     const tags = {
-      isTeamPlayer: { tag: "👥Team Player", desc: "Worked with 2 or more people." },
+      isTeamPlayer: { tag: "👥Team Player", desc: "Worked with 2 or more person." },
+      isCommunityDriven: { tag: "🌐Community driven", desc: "Worked with 50 or more person." },
       isWeekendProject: { tag: "🏠Weekend Project", desc: "More comments on the weekend." },
       isBigProject: { tag: "🗃️Big Project", desc: "Total commits exceed 100." },
       isHobbyProject: { tag: "🎨Hobby Project", desc: "Total commits is under 25." },
@@ -45,7 +46,7 @@ function App() {
       tags[key]["color"] = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
     });
     try {
-      const token = process.env.REACT_APP_GITHUB_TOKEN;
+      const token = process.env.REACT_APP_API_KEY;
 
       const userRes = await fetch(`https://api.github.com/users/${username}`, {
         headers: {
@@ -89,7 +90,7 @@ function App() {
             },
           });
           
-          const linkHeader = commitsRes.headers.get("link");
+          var linkHeader = commitsRes.headers.get("link");
           
           let totalCommits = 0;
           if (linkHeader) {
@@ -108,12 +109,23 @@ function App() {
 
           const commits = commitsRes.ok ? await commitsRes.json() : [];
           
-          //Count contributors
-          const uniqueContributors = new Set(
-            commits.map((commit) => commit.author?.login).filter(Boolean)
-          );
-    
-          const numContributors = uniqueContributors.size;
+          //Fetch contributors
+          
+          let contribRes = await fetch(`https://api.github.com/repos/${username}/${repo.name}/contributors?per_page=1`, {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+          });
+          
+          linkHeader = contribRes.headers.get("link");
+          
+          let totalContributors = 0;
+          if (linkHeader) {
+            const match = linkHeader.match(/&page=(\d+)>; rel="last"/);
+            if (match) {
+              totalContributors = parseInt(match[1], 10);
+            }
+          }
 
           //Fetch languages
           let languages = null;
@@ -130,10 +142,11 @@ function App() {
           } catch (error) {
             console.error("Error fetching languages:", error);
           }
-        
+          
           // Determine tags
-          const isTeamPlayer = numContributors > 2;
-          const isLoneWolf = numContributors == 1;
+          const isTeamPlayer = totalContributors > 2;
+          const isCommunityDriven = totalContributors > 50;
+          const isLoneWolf = totalContributors == 0;
           const isBigProject = totalCommits > 100;
           const isWeekendProject = (() => {
             if (commits.length < 2) return false;
@@ -226,6 +239,7 @@ function App() {
             name: repo.name,
             tags: [
                 isTeamPlayer && tags.isTeamPlayer,
+                isCommunityDriven && tags.isCommunityDriven,
                 isWeekendProject && tags.isWeekendProject,
                 isBigProject && tags.isBigProject,
                 isHobbyProject && tags.isHobbyProject,
@@ -329,12 +343,12 @@ function App() {
             <div className='traits'>
               <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
                 {traits["tag"].map((trait_tag,index)=>(
-                  <span style={{fontSize: Math.exp(5-index)*0.1+10}}>{trait_tag}</span>
+                  <span>{trait_tag}</span>
                 ))}
               </div>
               <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
                 {traits["lang"].map((trait_lang,index)=>(
-                  <span style={{fontSize: Math.exp(5-index)*0.1+10}}>{trait_lang}</span>
+                  <span>{trait_lang}</span>
                 ))}
               </div>
             </div>

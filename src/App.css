@@ -2,6 +2,7 @@
   --background: #0d1117;
   --primary: #ffffff;
 }
+
 body{
   background-color: var(--background);
   font-family: monospace;
@@ -101,7 +102,9 @@ input:focus{
   flex-direction: column;
 
   justify-content: center;
-  align-items: center;
+  align-items: start;
+
+  font-size: 20px;
 }
 
 .repos {
@@ -201,6 +204,17 @@ input:focus{
   color: var(--background);
 }
 
+@media only screen and (max-width: 600px) {
+  header{
+    scale: 0.8;
+  }
+  .repos{
+    margin-left: 0;
+  }
+  .user-info .traits div{
+    font-size: 12px;
+  }
+}
 
 @keyframes l1 {to{transform: translate(-50%, -50%) rotate(.5turn)}}
 @keyframes repo-load {
