@@ -233,6 +233,11 @@ input:focus{
   .user-info .traits div{
     font-size: 12px;
   }
+  .user-info .traits{
+
+    padding-left: 10px;
+    padding-right: 50px;
+  }
 }
 
 @keyframes l1 {to{transform: translate(-50%, -50%) rotate(.5turn)}}
