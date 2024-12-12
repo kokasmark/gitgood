@@ -29,7 +29,7 @@ function App() {
     const tags = {
       isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people." },
       isCommunityDriven: { tag: "🌐Community driven", desc: "Worked with 50 or more person." },
-      isWeekendProject: { tag: "🏠Weekend Project", desc: "More comments on the weekend." },
+      isWeekendProject: { tag: "🏠Weekend Project", desc: "More commits on the weekend." },
       isBigProject: { tag: "🗃️Big Project", desc: "Total commits exceed 100." },
       isHobbyProject: { tag: "🎨Hobby Project", desc: "Total commits is under 25." },
       isStarryNight: { tag: "⭐Starry Night", desc: "More than 100 stars." },
