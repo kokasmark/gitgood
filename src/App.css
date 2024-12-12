@@ -39,6 +39,16 @@ input{
 
   border-bottom: 2px solid white;
 }
+button{
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+
+  cursor: pointer;
+}
 input:focus{
   outline: none;
 }

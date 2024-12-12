@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Repositorys from './Repositorys';
 
 function App() {
@@ -8,13 +8,18 @@ function App() {
   const [tagHovered, setTagHovered] = useState("");
   const [repos, setRepos] = useState([]);
   const [user, setUser] = useState();
-  const [traits, setTraits] = useState();
+  const [traits, setTraits] = useState({"tag":[],"lang":[]});
 
   const RepoArgs = {
     repos,
     tagHovered,
     setTagHovered,
   }
+
+  useEffect(() => {
+    getTraits();
+  }, [repos]);
+
   const fetchRepos = async (username) => {
     try {
       const token = process.env.REACT_APP_GITHUB_TOKEN;
@@ -119,13 +124,13 @@ function App() {
               isWeekendProject && "🏠Weekend Project",
               isBigProject && "🗃️Big Project",
             ].filter(Boolean),
-            languages: languages
+            languages: languages,
+            height: Math.random()*100
           };
         })
       );
       
       setRepos(repoData);
-      getTraits();
     } catch (error) {
       console.error("Error fetching repos:", error);
     }
@@ -197,7 +202,6 @@ function App() {
           user != null && (
           <div className='user-info'>
             <div className='user-avatar'>
-              <h2>{user.name}</h2>
               <img src={user.avatar_url} />
             </div>
 

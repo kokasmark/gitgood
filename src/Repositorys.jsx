@@ -10,18 +10,31 @@ const Repositorys = ({ repos, tagHovered,setTagHovered }) => {
       gutter: 10,
     });
 
+    setTimeout(() => {
+        const packery = new Packery(packeryRef.current, {
+            itemSelector: '.repo',
+            gutter: 10,
+          });
+      
+          // Re-layout after content changes
+          return () => {
+            packery.layout();
+          };
+    }, 500);
+
     // Re-layout after content changes
     return () => {
       packery.layout();
     };
   }, [repos]);
 
+
   return (
     <div ref={packeryRef} className="repos">
        {repos.map((repo, index) => (
           <div key={index} className={`repo 
             ${((!repo.tags.includes(tagHovered) && !Object.keys(repo.languages).includes(tagHovered)) && tagHovered != "") && "filtered-out"}`} 
-          style={{animationDelay: `${(index/repos.length)*0.5}s`}}>
+          style={{animationDelay: `${(index/repos.length)*0.5}s`,minHeight: `${150+repo.height}px`}}>
             <h2>{repo.name}</h2>
             <div className='tags'>
               {repo.tags.map((tag, tagIndex) => (
