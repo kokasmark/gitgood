@@ -43,14 +43,18 @@ function App() {
     getTraits();
   }, [repos]);
 
+  const generateHarmoniousColor = (hueOffset = 10) => {
+    const baseHue = Math.random() * 360;
+    const saturation = 50 + Math.random() * 20;  // 50% - 70%
+    const lightness = 60 + Math.random() * 15;  // 70% - 85%
+  
+    return `hsl(${(baseHue + hueOffset) % 360}, ${saturation}%, ${lightness}%)`;
+  };
+  
   const fetchRepos = async (username) => {
     setLoading(true);
     setTagHovered("");
 
-    Object.keys(tags).forEach(key => {
-      const newColor = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
-      setColors(prevColors => ({ ...prevColors, [tags[key].tag]: newColor }));
-    });
     let uniqueLanguages = [];
     try {
       const token = process.env.REACT_APP_API_KEY;
@@ -240,10 +244,14 @@ function App() {
             const sizeThreshold = 50000;
             return repoData.size > sizeThreshold;
           })();
-
+          
+          Object.keys(tags).forEach(key => {
+            const newColor = generateHarmoniousColor();
+            setColors(prevColors => ({ ...prevColors, [tags[key].tag]: newColor }));
+          });
           Object.keys(languages).forEach(lang => {
             if (! Object.keys(colors).includes(lang)) {
-              const newColor = `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`;
+              const newColor =generateHarmoniousColor();
               setColors(prevColors => ({ ...prevColors, [lang]: newColor }));
             }
           });
