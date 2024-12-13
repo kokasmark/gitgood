@@ -40,6 +40,7 @@ input{
 
   border-bottom: 2px solid white;
   -webkit-appearance: none;
+  -webkit-border-radius:0px;
 }
 button{
   background-color: transparent;
