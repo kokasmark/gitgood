@@ -39,6 +39,7 @@ input{
   height: 30px;
 
   border-bottom: 2px solid white;
+  -webkit-appearance: none;
 }
 button{
   background-color: transparent;
