@@ -1,6 +1,7 @@
 :root{
   --background: #0d1117;
   --primary: #ffffff;
+  --border:  rgb(160, 160, 160);
 }
 
 body{
@@ -100,7 +101,10 @@ input:focus{
 
   background-color: var(--primary);
   padding: 10px 100px 10px 100px;
+  border: 5px solid var(--border);
   border-radius: 20px;
+  border-top: none;
+  border-left: none;
 
   position: relative;
   left: 10px;
@@ -144,8 +148,11 @@ input:focus{
   justify-content: center;
   align-items: center;
 
-  border: 1px solid var(--primary);
+  border: 5px solid var(--border);
   border-radius: 10px;
+  border-top: none;
+  border-left: none;
+
   background-color: white;
   color: #1d1d1d;
   scale: 0;
@@ -158,7 +165,7 @@ input:focus{
   z-index: 100;
 }
 .repo.filtered-out{
-  filter: brightness(0.5);
+  filter: brightness(0.5) blur(3px);
 }
 .repo.load{
   animation: load-out 0.5s linear forwards;
@@ -194,6 +201,7 @@ input:focus{
 }
 .tag:hover{
   z-index: 10;
+  scale: 1.1;
 }
 .tag:hover .desc{
   opacity: 1;

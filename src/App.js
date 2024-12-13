@@ -12,12 +12,31 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [colors, setColors] = useState({})
 
+  const tags = {
+    isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people." },
+    isCommunityDriven: { tag: "🌐Community driven", desc: "Worked with 50 or more person." },
+    isWeekendProject: { tag: "🏠Weekend Project", desc: "More commits on the weekend." },
+    isBigProject: { tag: "🗃️Big Project", desc: "Total commits exceed 100." },
+    isHobbyProject: { tag: "🎨Hobby Project", desc: "Total commits is under 25." },
+    isStarryNight: { tag: "⭐Starry Night", desc: "More than 100 stars." },
+    isLoneWolf: { tag: "🐺Lone Wolf", desc: "Worked alone." },
+    isSpeedWriter: { tag: "⚡Speed Writer", desc: "Lot of commits in a short timespan." },
+    isNocturnal: { tag: "🌒Night Owl", desc: "Majority of commits at night." },
+    isFocused: { tag: "🎯Focused", desc: "Most of the commits in a short timespan." },
+    isMultilingual: { tag: "💬Multilingual", desc: "More than 5 languages." },
+    isActive: { tag: "🧑‍💻Active", desc: "Last update in a month." },
+    isAbandoned: { tag: "🕸️Abandoned", desc: "No updates in half a year." },
+    isLightweight: { tag: "🪶Lightweight", desc: "Smaller than 5mb." },
+    isHeavyweight: { tag: "🏋️Heavyweight", desc: "Larger than 50mb." }
+  };
+
   const RepoArgs = {
     repos,
     tagHovered,
     setTagHovered,
     loading,
-    colors
+    colors,
+    tags
   }
 
   useEffect(() => {
@@ -26,23 +45,7 @@ function App() {
 
   const fetchRepos = async (username) => {
     setLoading(true);
-    const tags = {
-      isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people." },
-      isCommunityDriven: { tag: "🌐Community driven", desc: "Worked with 50 or more person." },
-      isWeekendProject: { tag: "🏠Weekend Project", desc: "More commits on the weekend." },
-      isBigProject: { tag: "🗃️Big Project", desc: "Total commits exceed 100." },
-      isHobbyProject: { tag: "🎨Hobby Project", desc: "Total commits is under 25." },
-      isStarryNight: { tag: "⭐Starry Night", desc: "More than 100 stars." },
-      isLoneWolf: { tag: "🐺Lone Wolf", desc: "Worked alone." },
-      isSpeedWriter: { tag: "⚡Speed Writer", desc: "Lot of commits in a short timespan." },
-      isNocturnal: { tag: "🌒Night Owl", desc: "Majority of commits at night." },
-      isFocused: { tag: "🎯Focused", desc: "Most of the commits in a short timespan." },
-      isMultilingual: { tag: "💬Multilingual", desc: "More than 5 languages." },
-      isActive: { tag: "🧑‍💻Active", desc: "Last update in a month." },
-      isAbandoned: { tag: "🕸️Abandoned", desc: "No updates in half a year." },
-      isLightweight: { tag: "🪶Lightweight", desc: "Smaller than 5mb." },
-      isHeavyweight: { tag: "🏋️Heavyweight", desc: "Larger than 50mb." }
-    };
+    setTagHovered("");
 
     Object.keys(tags).forEach(key => {
       const newColor = `rgb(${Math.random()*255},${Math.random()*255},${Math.random()*255})`;
@@ -352,16 +355,14 @@ function App() {
             <div className='traits' style={{display: loading ? "none" : "flex"}}>
               <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
                 {traits["tag"].map((trait_tag,index)=>(
-                  <span className='tag' style={{backgroundColor: colors[trait_tag]}}
-                  onMouseEnter={(e) => setTagHovered(trait_tag)}
-                  onMouseLeave={(e) => setTagHovered("")}>{trait_tag}</span>
+                  <span className={`tag ${tagHovered == trait_tag ? "filter" : ""}`} style={{backgroundColor: colors[trait_tag]}}
+                  onClick={(e) => setTagHovered(tagHovered != trait_tag ? trait_tag : "")}>{trait_tag}</span>
                 ))}
               </div>
               <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
                 {traits["lang"].map((trait_lang,index)=>(
-                  <span className='tag' style={{backgroundColor: colors[trait_lang]}}
-                  onMouseEnter={(e) => setTagHovered(trait_lang)}
-                  onMouseLeave={(e) => setTagHovered("")}>{trait_lang}</span>
+                  <span className={`tag ${tagHovered == trait_lang ? "filter" : ""}`} style={{backgroundColor: colors[trait_lang]}}
+                  onClick={(e) => setTagHovered(tagHovered != trait_lang ? trait_lang : "")}>{trait_lang}</span>
                 ))}
               </div>
             </div>
