@@ -27,25 +27,29 @@ function App() {
     isActive: { tag: "🧑‍💻Active", desc: "Last update in a month." },
     isAbandoned: { tag: "🕸️Abandoned", desc: "No updates in half a year." },
     isLightweight: { tag: "🪶Lightweight", desc: "Smaller than 5mb." },
-    isHeavyweight: { tag: "🏋️Heavyweight", desc: "Larger than 50mb." }
+    isHeavyweight: { tag: "🏋️Heavyweight", desc: "Larger than 50mb." },
+    isEnthusiast: {tag: "💯Enthusiast",desc: "80% percent of the repository is 1 language."},
+    isStreak: {tag: "🔥Streak",desc: "Updates 3 days in a row."}
   };
 
   const tagColors = {
-    isTeamPlayer: "hsl(210, 60%, 65%)",        // Soft Blue
-    isCommunityDriven: "hsl(207, 100.00%, 42.00%)",   // Aqua
-    isWeekendProject: "hsl(45, 70%, 70%)",     // Warm Yellow
-    isBigProject: "hsl(30, 65%, 65%)",         // Orange
-    isHobbyProject: "hsl(300, 60%, 70%)",      // Light Purple
-    isStarryNight: "hsl(236, 75.50%, 32.00%)",        // Golden Yellow
-    isLoneWolf: "hsl(0, 50%, 60%)",            // Muted Red
-    isSpeedWriter: "hsl(59, 82.70%, 50.00%)",       // Magenta
-    isNocturnal: "hsl(260, 53.80%, 33.90%)",         // Midnight Purple
-    isFocused: "hsl(220, 60%, 65%)",           // Deep Blue
-    isMultilingual: "hsl(190, 60%, 65%)",      // Fresh Green
-    isActive: "hsl(120, 60%, 65%)",            // Sky Blue
-    isAbandoned: "hsl(0, 0.00%, 32.50%)",            // Grey
-    isLightweight: "hsl(60, 60%, 70%)",        // Soft Yellow
-    isHeavyweight: "hsl(10, 60%, 65%)",        // Burnt Red
+    isTeamPlayer: `hsl(210, 60%, 65%)`,
+    isCommunityDriven: `hsl(207, 100.00%, 42.00%)`,
+    isWeekendProject: `hsl(45, 70%, 70%)`,
+    isBigProject: `hsl(30, 65%, 65%)`,
+    isHobbyProject: `hsl(300, 60%, 70%)`, 
+    isStarryNight: `hsl(236, 75.50%, 32.00%)`,
+    isLoneWolf: `hsl(0, 50%, 60%)`, 
+    isSpeedWriter: `hsl(59, 82.70%, 50.00%)`,
+    isNocturnal: `hsl(260, 53.80%, 33.90%)`,
+    isFocused: `hsl(220, 60%, 65%)`, 
+    isMultilingual: `hsl(190, 60%, 65%)`,
+    isActive: `hsl(120, 60%, 65%)`,
+    isAbandoned: `hsl(0, 0.00%, 32.50%)`,
+    isLightweight: `hsl(60, 60%, 70%)`,
+    isHeavyweight: `hsl(10, 60%, 65%)`,
+    isEnthusiast: `hsl(145, 100.00%, 66.30%)`,
+    isStreak: `hsl(10, 79.10%, 54.90%)`,
   };
   
 
@@ -63,9 +67,9 @@ function App() {
   }, [repos]);
 
   const generateHarmoniousColor = (hueOffset = 10) => {
-    const baseHue = Math.random() * 360;
+    const baseHue = 180+Math.random() * 100;
     const saturation = 50 + Math.random() * 20;  // 50% - 70%
-    const lightness = 60 + Math.random() * 15;  // 70% - 85%
+    const lightness = 50 + Math.random() * 15;  // 70% - 85%
   
     return `hsl(${(baseHue + hueOffset) % 360}, ${saturation}%, ${lightness}%)`;
   };
@@ -263,17 +267,51 @@ function App() {
             const sizeThreshold = 50000;
             return repoData.size > sizeThreshold;
           })();
+          const isEnthusiast = (() => {
+            const total = Object.values(languages).reduce((sum, val) => sum + val, 0);
+            let flag = false;
+            Object.entries(languages).forEach(([lang, count]) => {
+              if ((count / total) >= 0.8) {
+                flag = true;
+              }
+            });
+            return flag;
+          })();
+          const isStreak = (() => {
+            if (!isActive) return false;
           
+            const uniqueDates = new Set(
+              commits.map(commit => new Date(commit.commit.author.date).toISOString().split('T')[0])
+            );
+          
+            const today = new Date().toISOString().split('T')[0];
+            const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
+              .toISOString()
+              .split('T')[0];
+            const twoDaysAgo = new Date(new Date().setDate(new Date().getDate() - 2))
+              .toISOString()
+              .split('T')[0];
+          
+            return (
+              uniqueDates.has(today) &&
+              uniqueDates.has(yesterday) &&
+              uniqueDates.has(twoDaysAgo)
+            );
+          })();          
+          
+          
+
           Object.keys(tags).forEach(key => {
-            const newColor = tagColors[key];
+            const newColor = generateHarmoniousColor();//tagColors[key];
             setColors(prevColors => ({ ...prevColors, [tags[key].tag]: newColor }));
           });
           Object.keys(languages).forEach(lang => {
             if (! Object.keys(colors).includes(lang)) {
-              const newColor =generateHarmoniousColor();
+              const newColor = generateHarmoniousColor();
               setColors(prevColors => ({ ...prevColors, [lang]: newColor }));
             }
           });
+
           return {
             name: repo.name,
             tags: [
@@ -291,7 +329,9 @@ function App() {
                 isActive && tags.isActive,
                 isAbandoned && tags.isAbandoned,
                 isLightweight && tags.isLightweight,
-                isHeavyweight && tags.isHeavyweight
+                isHeavyweight && tags.isHeavyweight,
+                isEnthusiast && tags.isEnthusiast,
+                isStreak && tags.isStreak
             ].filter(Boolean),
             languages: languages,
             height: Math.random()*100,
