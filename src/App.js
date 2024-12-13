@@ -13,7 +13,7 @@ function App() {
   const [colors, setColors] = useState({})
 
   const tags = {
-    isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people." },
+    isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people."},
     isCommunityDriven: { tag: "🌐Community driven", desc: "Worked with 50 or more person." },
     isWeekendProject: { tag: "🏠Weekend Project", desc: "More commits on the weekend." },
     isBigProject: { tag: "🗃️Big Project", desc: "Total commits exceed 100." },
@@ -29,6 +29,25 @@ function App() {
     isLightweight: { tag: "🪶Lightweight", desc: "Smaller than 5mb." },
     isHeavyweight: { tag: "🏋️Heavyweight", desc: "Larger than 50mb." }
   };
+
+  const tagColors = {
+    isTeamPlayer: "hsl(210, 60%, 65%)",        // Soft Blue
+    isCommunityDriven: "hsl(207, 100.00%, 42.00%)",   // Aqua
+    isWeekendProject: "hsl(45, 70%, 70%)",     // Warm Yellow
+    isBigProject: "hsl(30, 65%, 65%)",         // Orange
+    isHobbyProject: "hsl(300, 60%, 70%)",      // Light Purple
+    isStarryNight: "hsl(236, 75.50%, 32.00%)",        // Golden Yellow
+    isLoneWolf: "hsl(0, 50%, 60%)",            // Muted Red
+    isSpeedWriter: "hsl(59, 82.70%, 50.00%)",       // Magenta
+    isNocturnal: "hsl(260, 53.80%, 33.90%)",         // Midnight Purple
+    isFocused: "hsl(220, 60%, 65%)",           // Deep Blue
+    isMultilingual: "hsl(190, 60%, 65%)",      // Fresh Green
+    isActive: "hsl(120, 60%, 65%)",            // Sky Blue
+    isAbandoned: "hsl(0, 0.00%, 32.50%)",            // Grey
+    isLightweight: "hsl(60, 60%, 70%)",        // Soft Yellow
+    isHeavyweight: "hsl(10, 60%, 65%)",        // Burnt Red
+  };
+  
 
   const RepoArgs = {
     repos,
@@ -246,7 +265,7 @@ function App() {
           })();
           
           Object.keys(tags).forEach(key => {
-            const newColor = generateHarmoniousColor();
+            const newColor = tagColors[key];
             setColors(prevColors => ({ ...prevColors, [tags[key].tag]: newColor }));
           });
           Object.keys(languages).forEach(lang => {
@@ -361,13 +380,13 @@ function App() {
             </div>
 
             <div className='traits' style={{display: loading ? "none" : "flex"}}>
-              <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
+              <div>
                 {traits["tag"].map((trait_tag,index)=>(
                   <span className={`tag ${tagHovered == trait_tag ? "filter" : ""}`} style={{backgroundColor: colors[trait_tag]}}
                   onClick={(e) => setTagHovered(tagHovered != trait_tag ? trait_tag : "")}>{trait_tag}</span>
                 ))}
               </div>
-              <div style={{display: 'flex', flexDirection: 'column',gap:5}}>
+              <div>
                 {traits["lang"].map((trait_lang,index)=>(
                   <span className={`tag ${tagHovered == trait_lang ? "filter" : ""}`} style={{backgroundColor: colors[trait_lang]}}
                   onClick={(e) => setTagHovered(tagHovered != trait_lang ? trait_lang : "")}>{trait_lang}</span>

@@ -117,6 +117,8 @@ input:focus{
   position: absolute;
   left: -25px;
   rotate: 45deg;
+  border-bottom: 5px solid var(--border);
+  border-radius: 5px;
 }
 
 .user-info .traits div{
