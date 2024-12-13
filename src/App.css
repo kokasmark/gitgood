@@ -188,7 +188,7 @@ input:focus{
   position: relative;
   
   z-index: 5;
-  box-shadow: 0px 0px 10px #696969;
+  box-shadow: 0px 1px 2px #272727;
 }
 .tag:hover{
   z-index: 10;
@@ -231,12 +231,12 @@ input:focus{
     margin-left: 0;
   }
   .user-info .traits div{
-    font-size: 12px;
+    font-size: 10px;
   }
   .user-info .traits{
-
-    padding-left: 10px;
-    padding-right: 50px;
+    gap: 2px;
+    justify-content: space-evenly;
+    padding: 10px;
   }
 }
 
