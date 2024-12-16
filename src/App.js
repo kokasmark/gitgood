@@ -2,15 +2,17 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState,useEffect } from "react";
 import Repositorys from './Repositorys';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
-  const [username, setUsername] = useState("");
+function App({querry}) {
+  const [username, setUsername] = useState(querry);
   const [tagHovered, setTagHovered] = useState("");
   const [repos, setRepos] = useState([]);
   const [user, setUser] = useState();
   const [traits, setTraits] = useState({"tag":[],"lang":[]});
   const [loading, setLoading] = useState(false);
   const [colors, setColors] = useState({})
+  const [loadedQuerry, setloadedQuerry] = useState(false)
 
   const tags = {
     isTeamPlayer: { tag: "👥Team Player", desc: "Worked with other people."},
@@ -61,6 +63,15 @@ function App() {
     colors,
     tags
   }
+
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if(querry != "" && !loadedQuerry){
+      fetchRepos(username);
+      setloadedQuerry(true);
+    }
+  });
 
   useEffect(() => {
     getTraits();
@@ -400,15 +411,16 @@ function App() {
   return (
     <div className='App'>
       <header>
-        <h1>GitGood</h1>
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button onClick={()=>{fetchRepos(username)}}>Analyze</button>
-
+        {querry == "" && <div style={{display: 'flex', gap: 10, alignItems: 'center'}}>
+          <h1>GitGood</h1>
+          <input
+            type="text"
+            placeholder="Enter GitHub username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <button onClick={()=>{navigate(`/?username=${username}`)}}>Analyze</button>
+        </div>}
         {
           user != null && (
           <div className='user-info'>

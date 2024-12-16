@@ -9,6 +9,7 @@
     "packery": "^2.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
     "sweetalert2": "^11.14.5"
   },
